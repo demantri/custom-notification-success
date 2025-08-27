@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Success Notification</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        .custom-modal-content {
+            border-radius: 1rem;
+            text-align: center;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-footer {
+            border-top: none;
+            justify-content: center;
+        }
+
+        .lottie-container {
+            width: 150px;
+            height: 150px;
+            margin: auto;
+        }
+
+        .lottie-animation {
+            width: 100%;
+            height: 100%;
+        }
+
+        .notification-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .notification-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        #countdown {
+            font-size: 10px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#successModal">
+            Tampilkan Notifikasi Sukses
+        </button>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content custom-modal-content">
+                <div class="lottie-container">
+                    <dotlottie-player src="https://lottie.host/307417ac-5460-4273-911a-879f83daf28c/xgQYksof3L.lottie" background="transparent" speed="1" style="width: 100%; height: 100%;" direction="1" playmode="normal" loop autoplay></dotlottie-player>
+                </div>
+                <div class="modal-body">
+                    <h5 class="notification-title">Pembayaran Berhasil!</h5>
+                    <p class="notification-subtitle">Terima kasih, pembayaran Anda telah selesai diproses.</p>
+                    <br>
+                    <p id="countdown"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="window.print()">Cetak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            var countdownElement = document.getElementById('countdown');
+            var countdownTimer;
+            var timeRemaining = 10; // Waktu awal dalam detik
+
+            // Fungsi untuk memperbarui hitungan mundur
+            function updateCountdown() {
+                countdownElement.textContent = `Pop up akan otomatis ditutup dalam ${timeRemaining} detik`;
+                timeRemaining--;
+
+                if (timeRemaining < 0) {
+                    clearInterval(countdownTimer);
+                    myModal.hide();
+                }
+            }
+
+            // Menambahkan event listener saat modal ditampilkan
+            document.getElementById('successModal').addEventListener('shown.bs.modal', function () {
+                timeRemaining = 10; // Reset waktu
+                countdownTimer = setInterval(updateCountdown, 1000); // Mulai timer
+                updateCountdown(); // Langsung perbarui teks
+            });
+
+            // Menghapus timer saat modal ditutup
+            document.getElementById('successModal').addEventListener('hidden.bs.modal', function () {
+                clearInterval(countdownTimer);
+            });
+        });
+    </script>
+</body>
+
+</html>
